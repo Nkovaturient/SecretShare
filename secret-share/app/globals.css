@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --background: linear-gradient(
+    135deg,
+    rgb(187, 30, 10) 0%,
+    rgb(220, 48, 28) 25%,
+    rgb(248, 239, 239) 100%
+  );
+  --foreground: #1a1a1a;
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --accent-color: #dcfe50;
+  --text-primary: #1e3551;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: linear-gradient(
+      135deg,
+      rgb(26, 1, 1) 0%,
+      rgb(87, 14, 14) 50%,
+      rgb(143, 22, 22) 100%
+    );
+    --foreground: #f5f5f5;
+    --card-bg: rgba(18, 18, 18, 0.95);
+    --accent-color: #dcfe50;
+    --text-primary: #f0f0f0;
   }
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+}
+
+/* Enhanced card styles */
+.bg-white {
+  background: var(--card-bg) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Button enhancement */
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 254, 80, 0.2);
 }
