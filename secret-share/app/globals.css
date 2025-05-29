@@ -48,14 +48,12 @@ body {
   line-height: 1.5;
 }
 
-/* Enhanced card styles */
 .bg-white {
   background: var(--card-bg) !important;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Button enhancement */
 button {
   transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
