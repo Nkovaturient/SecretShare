@@ -14,7 +14,6 @@ export async function initStorachaClient() {
     const proof = await Proof.parse(process.env.NEXT_PUBLIC_STORACHA_DELEGATION);
     const space = await client.addSpace(proof);
     await client.setCurrentSpace(space.did());
-    console.log("Storacha client initialized with space:", space.did());
 
     return client;
   } catch (error) {
@@ -31,11 +30,8 @@ export async function initStorachaClient() {
  */
 export async function uploadFileToStoracha(file) {
   try {
-    const client = await initStorachaClient();
-    if (!client) {
-      throw new Error("Storacha client is not initialized");
-    }
-    
+    const client = await initStorachaClient()
+
     const cid = await client.uploadFile(file);
     if (!cid) {
       throw new Error("Failed to upload file, no CID returned");

@@ -56,9 +56,69 @@ body {
 
 button {
   transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  cursor: pointer;
+  /* background-color: #9ae600; */
 }
 
 button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(220, 254, 80, 0.2);
+}
+
+/* Share secret Download button specific styles */
+.download-button {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.download-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 254, 80, 0.2);
+}
+
+.download-button:active {
+  transform: translateY(0);
+}
+
+
+/*footer */
+footer {
+  position: relative;
+  margin-top: auto;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-color),
+    transparent
+  );
+}
+
+.footer-link-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent-color);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.footer-link-hover:hover::after {
+  transform: translateX(0);
 }

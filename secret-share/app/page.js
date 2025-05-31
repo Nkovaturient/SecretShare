@@ -6,8 +6,8 @@ export default function Home() {
       <h2 className="text-4xl md:text-6xl font-bold mb-6 mt-6 py-4 text-white">
         Secure. Scoped. Shared.
       </h2>
-      <p className="text-lg md:text-xl text-gray-300 max-w-2xl mb-8">
-        Share secrets like API keys and credentials with time-limited and usage-limited access — powered by UCANs & Storacha.
+      <p className="text-lg md:text-xl text-white font-semibold max-w-2xl mb-8">
+        Share secrets like API keys and credentials with time-limited and usage-limited access — powered by Storacha.
       </p>
       <Link
         href="/issue"
@@ -15,15 +15,6 @@ export default function Home() {
       >
         Get Started
       </Link>
-      {/* <div className="mt-10">
-        <Image
-          src="/sslogo.jpg"
-          alt="Secure Sharing"
-          width={600}
-          height={400}
-          className="rounded-lg shadow-lg"
-        />
-      </div> */}
     </section>
   );
 }

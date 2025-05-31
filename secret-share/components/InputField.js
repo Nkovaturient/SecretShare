@@ -1,5 +1,3 @@
-import { ReactNode } from 'react'
-
 export function InputField({
   label,
   value,

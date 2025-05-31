@@ -1,0 +1,94 @@
+import { useState } from 'react'
+import { Copy, Download, Trash2, Timer, Users2, Check } from 'lucide-react'
+import { motion } from 'framer-motion'
+
+export function SecretCard({ secret, onRevoke }) {
+  const [copied, setCopied] = useState(false)
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(secret.shareLink)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleDownload = () => {
+    const blob = new Blob([secret.shareLink], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `secret-${secret.id}.txt`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  const isExpired = new Date(secret.expiry) <= new Date()
+  const usagePercentage = (secret.usage / secret.usageLimit) * 100
+
+  return (
+    <motion.div
+      className={`bg-white p-6 m-4 rounded-2xl shadow-lg border ${
+        isExpired ? 'border-red-200' : 'border-gray-200'
+      }`}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className="space-y-4">
+        <div className="flex justify-between items-start">
+          <div className="space-y-1">
+            <h3 className="font-medium text-gray-900">Shared Secret</h3>
+            <p className="text-sm text-sky-500">{secret.secret}</p>
+          </div>
+          <button
+            onClick={onRevoke}
+            className="text-red-500 hover:text-red-700 transition"
+          >
+            <Trash2 className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <Users2 className="w-4 h-4" />
+          <span>Recipient: {(secret.recipient).substring(0, 15) + '...'}</span>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span>Usage</span>
+            <span>{secret.usage}/{secret.usageLimit}</span>
+          </div>
+          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div 
+              className={`h-full ${isExpired ? 'bg-red-500' : 'bg-green-500'}`}
+              style={{ width: `${usagePercentage}%` }}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Timer className="w-4 h-4" />
+            <span>{new Date(secret.expiry).toLocaleString()}</span>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={copyToClipboard}
+              className="p-2 text-gray-600 hover:text-gray-900 transition"
+              title="Copy Link"
+            >
+              {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+            </button>
+            <button
+              onClick={handleDownload}
+              className="p-2 text-gray-600 hover:text-gray-900 transition"
+              title="Download"
+            >
+              <Download className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
