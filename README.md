@@ -19,6 +19,12 @@
 
 ---
 
+## Demo Video
+
+https://www.loom.com/share/b5c77e9ae3f34b6790d91a5d3688b90b?sid=95652b12-2f69-4b17-8401-dc2020cd9513
+
+---
+
 # Potentials and Features
 
 **💡 1. Clear Problem-Solution Fit (10/10)**
