@@ -25,4 +25,12 @@ export class SecretStorage {
     const filtered = secrets.filter(s => s.id !== id)
     localStorage.setItem(SECRETS_KEY, JSON.stringify(filtered))
   }
+
+  static updateSecretStatus = (id, status) => {
+    const secrets = SecretStorage.getSecrets()
+    const updatedSecrets = secrets.map(secret =>
+      secret.id === id ? { ...secret, revoked: status } : secret
+    )
+    localStorage.setItem(SECRETS_KEY, JSON.stringify(updatedSecrets))
+  }
 }

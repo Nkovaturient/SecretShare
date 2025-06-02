@@ -3,7 +3,8 @@ import * as DID from '@ipld/dag-ucan/did'
 import * as Delegation from '@ucanto/core/delegation'
 import { initStorachaClient } from './storacha';
 import { decode } from '@ipld/dag-ucan';
-
+import * as Link from 'multiformats/link'
+import * as Proof from "@web3-storage/w3up-client/proof";
 
 export const createUCANDelegation = async ({
   recipientDID,
@@ -17,24 +18,23 @@ export const createUCANDelegation = async ({
     const audience = DID.parse(recipientDID);
     const agent = client.agent;
 
+    const baseCapabilities = ['store/remove', 'store/add', 'access/secret'];
+
+    const capabilities = baseCapabilities.map(cap => ({
+      with: `${spaceDID}`,
+      can: cap,
+      nb: {
+        usage: usageLimit,
+        expiration,
+      },
+    }));
+
     const ucan = await Delegation.delegate({
       issuer: agent.issuer,
       audience,
-      capabilities: [{
-        with: `${spaceDID}`,
-        can: 'access/secret',
-        nb: {
-          usage: usageLimit,
-          expiration,
-        },
-      }],
+      capabilities
     })
     const cid = await ucan.cid;
-    console.log('UCAN CID:', cid);
-
-    console.log('Issuer DID:', agent.did())
-    console.log('Audience DID:', recipientDID)
-    console.log('Space DID:', spaceDID)
     const archive = await ucan.archive();
 
     if (!archive.ok) {
@@ -85,6 +85,58 @@ async function parseProof(data) {
     blocks.push(block)
   }
   return Delegation.importDAG(blocks)
+}
+
+
+export async function RevokeAccess(secretCID) {
+  try {
+    const client = await initStorachaClient();
+    const parsedCidToBeRemoved = Link.parse(secretCID);
+    console.log("Parsed CID to be removed:", parsedCidToBeRemoved);
+    if (!parsedCidToBeRemoved) {
+      throw new Error("Invalid CID format");
+    }
+
+    // Define the capability to revoke
+    const caps = [{
+      with: `${client.agent.did()}`,
+      can: 'access/secret',
+    }];
+
+    // Retrieve the corresponding proofs for the capability
+    const proofs = client.proofs(caps);
+    const parseDelegatedProofs = await Promise.all(proofs.map(async (proof) => {
+      try {
+        return await Proof.parse(proof); //parseProof(proof);
+      } catch (error) {
+        console.error("Error parsing proof:", error);
+      }
+    }
+    ))
+
+    // Revoke the delegation using the appropriate proofs
+    await client.revokeDelegation(parsedCidToBeRemoved, {
+      shards: true,
+      proofs: parseDelegatedProofs,
+    });
+
+    // const validateRevoke = client.getReceipt(secretCID)
+    // .then((receipt) => {
+    //   console.log("Revoke Access Receipt:", receipt);
+    //   if (!receipt) {
+    //     throw new Error("No receipt found for the revoked CID");
+    //   }
+    //   return receipt;
+    // }).catch((error) => {
+    //   console.error("Error retrieving receipt for revoked CID:", error);
+    //   return null;
+    // })
+    console.log("Revoked Delgations for CID:", secretCID);
+    return true
+  } catch (error) {
+    console.error("Error revoking delegations:", error);
+    return false;
+  }
 }
 
 export async function decodeUCAN(encoded) {

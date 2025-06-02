@@ -16,7 +16,7 @@ export default function DashboardPage() {
     setSecrets(loadedSecrets)
   }, [])
 
-  const handleRevoke = (id) => {
+  const handleDelete = (id) => {
     SecretStorage.removeSecret(id)
     setSecrets(prev => prev.filter(secret => secret.id !== id))
   }
@@ -69,7 +69,7 @@ export default function DashboardPage() {
             >
               <SecretCard 
                 secret={secret}
-                onRevoke={() => handleRevoke(secret.id)}
+                onDelete={() => handleDelete(secret.id)}
               />
             </motion.div>
           ))}

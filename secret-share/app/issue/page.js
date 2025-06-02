@@ -6,10 +6,11 @@ import { InputField } from '@/components/InputField'
 import { ShieldCheck, Clock, Users } from 'lucide-react'
 import { uploadFileToStoracha } from '@/lib/storacha'
 import * as Delegation from '@ucanto/core/delegation'
-import {createUCANDelegation } from '@/lib/ucan'
+import { createUCANDelegation } from '@/lib/ucan'
 import Link from 'next/link'
 import * as Client from '@web3-storage/w3up-client'
 import { SecretStorage } from '@/lib/secretRecord'
+import { toast } from 'react-toastify'
 
 
 export default function IssueSecretPage() {
@@ -68,12 +69,11 @@ export default function IssueSecretPage() {
         throw new Error('Failed to upload secret data to Storacha')
       }
       console.log('Data uploaded successfully, CID:', uploadSecret)
-
       setShareLink(`${uploadSecret.url}`)
 
       SecretStorage.addSecret({
-        secret: secret.substring(0, 15) + '...',
-        shareLink: shareLink,
+        secret: secret,
+        shareLink: uploadSecret.url,
         recipient,
         expiry: new Date(Date.now() + expiry * 60000).toISOString(),
         usageLimit,
@@ -81,8 +81,11 @@ export default function IssueSecretPage() {
         cid: uploadSecret.cid
       })
 
+      toast.success(`Secret uploaded successfully!`, { theme: 'dark' })
+
     } catch (err) {
       console.error('Error sharing secret:', err)
+      toast.error(`Failed to share secret: ${err.message}`, { theme: 'dark' })
     } finally {
       setLoading(false)
     }
