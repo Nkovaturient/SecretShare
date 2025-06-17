@@ -10,7 +10,7 @@ export default function Home() {
         Share secrets like API keys and credentials with time-limited and usage-limited access — powered by Storacha.
       </p>
       <Link
-        href="/issue"
+        href="/agent"
         className="bg-lime-400 hover:bg-lime-300 text-black font-semibold py-3 px-6 rounded-full shadow-lg transition"
       >
         Get Started

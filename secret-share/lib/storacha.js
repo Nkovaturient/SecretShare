@@ -45,8 +45,7 @@ export async function uploadFileToStoracha(file) {
       url: `https://w3s.link/ipfs/${cid}`,
       uploadedAt: new Date().toISOString(),
     };
-    console.log("File uploaded successfully, CID:", cid.toString());
-    console.log("File metadata:", data);
+    console.log("✅Uploaded successfully! File metadata:", data);
     return data;
   } catch (error) {
     console.error("Error uploading file to Storacha:", error);

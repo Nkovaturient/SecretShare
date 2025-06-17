@@ -18,7 +18,7 @@ export const createUCANDelegation = async ({
     const audience = DID.parse(recipientDID);
     const agent = client.agent;
 
-    const baseCapabilities = ['store/remove', 'store/add', 'access/secret'];
+    const baseCapabilities = ['store/remove', 'store/add'];
 
     const capabilities = baseCapabilities.map(cap => ({
       with: `${spaceDID}`,
@@ -107,7 +107,7 @@ export async function RevokeAccess(secretCID) {
     const proofs = client.proofs(caps);
     const parseDelegatedProofs = await Promise.all(proofs.map(async (proof) => {
       try {
-        return await Proof.parse(proof); //parseProof(proof);
+        return await Proof.parse(proof); 
       } catch (error) {
         console.error("Error parsing proof:", error);
       }
@@ -136,73 +136,5 @@ export async function RevokeAccess(secretCID) {
   } catch (error) {
     console.error("Error revoking delegations:", error);
     return false;
-  }
-}
-
-export async function decodeUCAN(encoded) {
-  try {
-    const bytes = Buffer.from(encoded, 'base64');
-    const reader = await CarReader.fromBytes(bytes);
-
-    const blocks = [];
-    for await (const block of reader.blocks()) {
-      blocks.push(block);
-    }
-
-    const delegation = await Delegation.importDAG(blocks);
-
-    const cap = delegation.capabilities()[0];
-    const exp = cap.nb?.expiration || 0;
-    const now = Math.floor(Date.now() / 1000);
-
-    return {
-      isValid: exp > now,
-      cid: cap.with.split('storage://')[1],
-      usage: cap.nb?.usage,
-      expiration: exp
-    };
-  } catch (err) {
-    console.error('Error decoding UCAN:', err);
-    return { isValid: false };
-  }
-}
-
-export async function validateUCAN(encoded) {
-  try {
-    // 1. Import the UCAN as a delegation
-    const blocks = await Delegation.extract(encoded)
-
-    if (!blocks || blocks.length === 0) {
-      return { isValid: false }
-    }
-
-    const delegation = await decode(blocks[0])
-
-    // 2. Get the invocation/claim data
-    const capabilities = [...delegation.capabilities()]
-    const cap = capabilities[0]
-
-    if (!cap) return { isValid: false }
-
-    // 3. Extract facts and constraints
-    const cid = cap.nb?.cid
-    const iv = cap.nb?.iv
-    const exp = cap.expiry || 0
-    const now = Math.floor(Date.now() / 1000)
-
-    if (!cid || !iv || exp < now) {
-      return { isValid: false }
-    }
-
-    return {
-      isValid: true,
-      cid,
-      iv,
-      expiration: exp,
-    }
-
-  } catch (error) {
-    console.error('UCAN validation error:', error)
-    return { isValid: false }
   }
 }
