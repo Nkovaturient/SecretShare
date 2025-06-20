@@ -11,20 +11,16 @@ import Link from 'next/link'
 import * as Client from '@web3-storage/w3up-client'
 import { SecretStorage } from '@/lib/secretRecord'
 import { toast } from 'react-toastify'
-import { encryptData } from '@/lib/encrypt'
 import { storeContext } from '@/context/storeContext'
 
 
 export default function IssueSecretPage() {
-  const { chainType, wallet, chainID } = useContext(storeContext);
+  const { handleEncryption, isLoading, setIsLoading, secret, setSecret } = useContext(storeContext);
   const router = useRouter()
 
-  const [secret, setSecret] = useState('')
-  const [encryptedSecret, setEncryptedSecret] = useState('')
   const [expiry, setExpiry] = useState(10) // in mins
   const [usageLimit, setUsageLimit] = useState(1)
   const [recipient, setRecipient] = useState('')
-  const [loading, setLoading] = useState(false)
   const [shareLink, setShareLink] = useState('')
 
   const triggerDelegation = async () => {
@@ -39,13 +35,10 @@ export default function IssueSecretPage() {
       const delegation = await Delegation.extract(delegationBytes)
       if (!delegation.ok) throw new Error('UCAN extract failed')
 
-      // console.log('Delegation verified successfully:', delegation.ok)
-
       const client = await Client.create()
       const space = await client.addSpace(delegation.ok)
       client.setCurrentSpace(space.did())
       return delegation.ok
-
     }
     catch (error) {
       console.error('Error triggering delegation:', error)
@@ -53,28 +46,10 @@ export default function IssueSecretPage() {
     }
   }
 
-  const handleEncryption = async () => {
-    try {
-      if (!wallet || !chainID) {
-        toast.error(`Couldnt connect wallet. Kindly disconnect and try again!`)
-      }
-      const encryptedData = await encryptData(secret, chainType, wallet, chainID);
-      const encryptSecret = encryptedData.dataToEncryptHash;
-      setEncryptedSecret(encryptSecret)
-      return encryptSecret
-
-    } catch (error) {
-      setLoading(false)
-      // toast.error(`${error.message}`, { theme: "dark" });
-      console.log("Encryption handler failed:", error);
-
-    }
-  }
-
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
+    setIsLoading(true)
 
     try {
       const delegate = await triggerDelegation()
@@ -96,7 +71,6 @@ export default function IssueSecretPage() {
       if (!uploadSecret) {
         throw new Error('Failed to upload secret data to Storacha')
       }
-      console.log('Data uploaded successfully, CID:', uploadSecret)
       setShareLink(`${uploadSecret.url}`)
 
       SecretStorage.addSecret({
@@ -115,7 +89,7 @@ export default function IssueSecretPage() {
       console.error('Error sharing secret:', err)
       toast.error(`Failed to share secret: ${err.message}`, { theme: 'dark' })
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -172,11 +146,11 @@ export default function IssueSecretPage() {
         />
         <button
           type="submit"
-          className={`w-full py-2 px-4 mb-6 mt-6 rounded-lg text-white font-semibold ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#1e3551] hover:bg-[#15283d]'
+          className={`w-full py-2 px-4 mb-6 mt-6 rounded-lg text-white font-semibold ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#1e3551] hover:bg-[#15283d]'
             }`}
-          disabled={loading}
+          disabled={isLoading}
         >
-          {loading ? '🚀Seconds to Storacha🔥...' : 'Upload & Share'}
+          {isLoading ? '🚀Seconds to Storacha🔥...' : 'Upload & Share'}
         </button>
       </form>
 

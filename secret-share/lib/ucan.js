@@ -1,8 +1,6 @@
-import { CarReader } from '@ipld/car'
 import * as DID from '@ipld/dag-ucan/did'
 import * as Delegation from '@ucanto/core/delegation'
 import { initStorachaClient } from './storacha';
-import { decode } from '@ipld/dag-ucan';
 import * as Link from 'multiformats/link'
 import * as Proof from "@web3-storage/w3up-client/proof";
 
@@ -74,17 +72,6 @@ export async function validateAccess(encodedDelegation) {
   } catch (err) {
     return { valid: false, reason: 'invalid' };
   }
-}
-
-
-/** @param {string} data Base64 encoded CAR file */
-async function parseProof(data) {
-  const blocks = []
-  const reader = await CarReader.fromBytes(Buffer.from(data, 'base64'))
-  for await (const block of reader.blocks()) {
-    blocks.push(block)
-  }
-  return Delegation.importDAG(blocks)
 }
 
 

@@ -1,13 +1,17 @@
-import { useState } from 'react'
-import { Copy, Download, Trash2, Timer, Users2, Check, Ban, ShieldOffIcon } from 'lucide-react'
+import { useContext, useState } from 'react'
+import { Copy, Download, Trash2, Timer, Users2, Check, ShieldOffIcon, UnlockIcon } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { RevokeAccess } from '@/lib/ucan'
 import { toast } from 'react-toastify'
 import { SecretStorage } from '@/lib/secretRecord'
+import { storeContext } from '@/context/storeContext'
 
 export function SecretCard({ secret, onDelete }) {
+  const { handleDecryption, isLoading } = useContext(storeContext)
   const [copied, setCopied] = useState(false)
   const [revoked, setRevoked] = useState(secret.revoked || false)
+  const [decrypted, setDecrypted] = useState(false)
+  const [revealSecret, setRevealSecret] = useState('')
 
   const copyToClipboard = async () => {
     if (revoked) return
@@ -48,6 +52,15 @@ export function SecretCard({ secret, onDelete }) {
     toast.success('Downloaded!', { theme: 'dark' })
   }
 
+  const handleDecryptionResult = () => {
+    const response = handleDecryption()
+    if (response != null) {
+      setDecrypted(true);
+      setRevealSecret(response)
+    }
+    setDecrypted(false)
+  }
+
   const isExpired = new Date(secret.expiry) <= new Date()
   const usagePercentage = (secret.usage / secret.usageLimit) * 100
   const getButtonStyles = () => {
@@ -74,7 +87,15 @@ export function SecretCard({ secret, onDelete }) {
         <div className="flex justify-between items-start">
           <div className="space-y-1">
             <h3 className="font-medium text-gray-900">Shared Secret</h3>
-            <p className="text-sm text-sky-500">{(secret.secret).substring(0, 15) + '...'}</p>
+            <p className="text-sm text-sky-500">{decrypted ? revealSecret : (secret.secret).substring(0, 15) + '...'}</p>
+            <button
+              onClick={handleDecryptionResult}
+              disabled={isLoading}
+              className={`bg-purple-600 px-6 py-4  rounded-lg hover:bg-purple-700 transition-all duration-300 font-semibold ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+            >
+              Reveal
+            </button>
           </div>
           <button
             onClick={onDelete}

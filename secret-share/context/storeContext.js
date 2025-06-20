@@ -3,6 +3,7 @@
 import { createContext, useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import { ethers } from "ethers";
+import { decryptData, encryptData } from '@/lib/encrypt'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const storeContext = createContext(null);
@@ -106,6 +107,11 @@ const StoreContextProvider = (props) => {
   const [chainID, setChainID] = useState(null);
   const [wallet, setWallet] = useState(null);
   const [signer, setSigner] = useState(null);
+  const [secret, setSecret] = useState('')
+  const [encryptedSecret, setEncryptedSecret] = useState('')
+  const [cipherSecret, setCipherSecret] = useState('')
+  const [accessConditions, setAccessConditions]= useState('');
+
 
   const handleAccountsChanged = useCallback((accounts) => {
     if (accounts.length > 0) {
@@ -256,12 +262,65 @@ const StoreContextProvider = (props) => {
     }
   };
 
+  const handleEncryption = async () => {
+      try {
+        if (!wallet || !chainID) {
+          toast.error(`Couldnt connect wallet. Kindly disconnect and try again!`)
+        }
+        const encryptedData = await encryptData(secret, chainType, wallet, chainID);
+        const encryptSecret = encryptedData.dataToEncryptHash;
+        const cipherText = encryptedData.ciphertext;
+        const accessText = encryptedData.accessControlConditions
+        localStorage.setItem(`cipherText`, cipherText)
+        localStorage.setItem(`accessText`, accessText)
+        localStorage.setItem(`encryptSecret`, encryptSecret)
+        setAccessConditions(accessText)
+        setCipherSecret(cipherText)
+        setEncryptedSecret(encryptSecret)
+        return encryptSecret
+  
+      } catch (error) {
+        setIsLoading(false)
+        console.log("Encryption handler failed:", error);
+      }
+    }
+
+    const handleDecryption = async () => {
+      try {
+        setIsLoading(true)
+        if (!wallet || !chainID) {
+          toast.error(`Kindly connect wallet to proceed!`)
+        } else if(!cipherSecret || !encryptedSecret){
+          toast.warn(`Couldnt get the encrypted secret key. Try again later!`)
+        }
+
+        const savedCipherText= localStorage.getItem(`cipherText`)
+        const savedAccessText = localStorage.getItem(`accessText`)
+        const savedEncryptSecret= localStorage.getItem(`encryptSecret`)
+        const response = await decryptData(chainType, wallet, chainID, signer, savedCipherText, savedEncryptSecret, savedAccessText );
+        setIsLoading(false)
+        console.log(`decryption context result=`, response)
+        return response
+  
+      } catch (error) {
+        setIsLoading(false)
+        console.log("Decryption handler failed:", error);
+        toast.info(`Unknown Error occured. Couldnt Decrypt!`)
+      }
+    }
+
+  
+
   const contextValue = {
     connectWallet,
     disconnect,
     account,
     isLoading,
+    handleEncryption,
+    handleDecryption,
     setIsLoading,
+    secret,
+    setSecret,
     setChainType,
     chainType,
     chainID,

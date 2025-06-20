@@ -45,8 +45,8 @@ export async function encryptData(data, chainType, wallet, chainId) {
     },
     litClient
   );
-  console.log(`encryption result=`, ciphertext);
-  console.log(`encryption hash=`, dataToEncryptHash);
+  // console.log(`encryption result=`, ciphertext);
+  // console.log(`encryption hash=`, dataToEncryptHash);
 
   return {
     ciphertext,
@@ -71,8 +71,8 @@ export async function decryptData(
     }
 
     // Create SIWE message
-    const domain = 'localhost';
-    const origin = 'https://localhost';
+    const domain = 'SecretShare';
+    const origin = 'https://secret-share-lilac.vercel.app/'; // 'https://localhost';
     const statement = 'Decrypting file from IPFS';
     const uri = origin;
     const version = '1';
