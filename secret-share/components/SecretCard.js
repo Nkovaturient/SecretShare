@@ -88,14 +88,13 @@ export function SecretCard({ secret, onDelete }) {
           <div className="space-y-1">
             <h3 className="font-medium text-gray-900">Shared Secret</h3>
             <p className="text-sm text-sky-500">{decrypted ? revealSecret : (secret.secret).substring(0, 15) + '...'}</p>
-            <button
+            {/* <button
               onClick={handleDecryptionResult}
               disabled={isLoading}
-              className={`bg-purple-600 px-6 py-4  rounded-lg hover:bg-purple-700 transition-all duration-300 font-semibold ${isLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={getButtonStyles()}
             >
               Reveal
-            </button>
+            </button> */}
           </div>
           <button
             onClick={onDelete}
