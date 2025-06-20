@@ -55,7 +55,7 @@ https://www.loom.com/share/b5c77e9ae3f34b6790d91a5d3688b90b?sid=95652b12-2f69-4b
 User Input (Secret/Note/API Key)
         |
         v
-Encrypt File (AES or inbuilt)
+Encrypt File (Lit Encryption Protocol)
         |
         v
 Upload Encrypted File to Storacha (returns CID)
@@ -68,10 +68,10 @@ Issue UCAN -> Scoped to:
    - Recipient's DID
         |
         v
-Share link: /share/[ucan]
+Share ipfs link: 
         |
         v
-User accesses → UCAN verified → File fetched from Storacha → Decrypted → Revealed once
+User accesses → UCAN verified → File fetched from Storacha → Decrypted → Revealed
 ```
 
 ---
@@ -91,15 +91,16 @@ User accesses → UCAN verified → File fetched from Storacha → Decrypted →
 
 2. **Generates UCAN delegation**
    - Specifies:
+     - secrets/credentials
      - Recipient DID
      - Expiry time
      - Usage count (e.g., one-time use)
    - Delegation signed with issuer’s key
 
-3. **Recipient visits `/share/[ucan]`**
+3. **Recipient visits `ipfs gateway url`**
    - UCAN is parsed and validated
    - If valid and not expired/used:
-     - Retrieves and reveals secret
+     - Retrieves, Decrypts and then reveals secret
    - If invalid:
      - Displays "Access Denied"
 
@@ -135,5 +136,11 @@ touch .env
 # 4. Run locally
 npm run dev
 ```
+
+## Resources: ⚡🔥💲
+**Storacha UCANS**: https://github.com/storacha/ucanto
+**Storacha Upload-Service Capabilities**: https://github.com/storacha/upload-service/tree/main/packages/capabilities
+**LIT Encryption Protocol Guide**: https://github.com/storacha/upload-service/tree/main/packages/encrypt-upload-client
+**Implementation Guide**: https://github.com/seetadev/Invoice-PPT-Subscribe-Storacha-Storage/tree/lit-encryption
 
 Feel free to ping me in case of any issues or feedback! Happy coding! :rachaheart ♥🔥
