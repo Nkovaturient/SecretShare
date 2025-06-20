@@ -57,9 +57,10 @@ export default function IssueSecretPage() {
 
       const encryptSecret = await handleEncryption()
       if (!encryptSecret) {
-        toast.error(`Connect your wallet before proceeding or try again later`)
+        toast.error(`Connect your wallet before proceeding!`)
         throw Error(`Encryption Issue. Try again Later!`)
       }
+      toast.warn(`Encryption successful! Your Credentials are secured.🔐`, {theme: 'dark'})
 
       const BlobData = new Blob([JSON.stringify({ encryptSecret, recipient, expiry, usageLimit })], { type: 'application/json' })
       const data = new File([BlobData], `secret-${Date.now()}.json`, {
