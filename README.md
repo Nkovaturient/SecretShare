@@ -3,7 +3,8 @@ SecretShare is a secure way to delegate time-limited or usage-limited access to 
 
 ## Live : [SecretShare](https://secret-share-lilac.vercel.app/)
 
-![Screenshot 2025-06-07 174457](https://github.com/user-attachments/assets/5482ad7a-490f-47a8-83f7-a9e0dc3a8cf4)
+![Screenshot (607)](https://github.com/user-attachments/assets/fcf8f5e4-b286-4065-8116-ba96fca4ee71)
+
 
 ## 📖 About
 
