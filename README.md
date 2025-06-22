@@ -1,12 +1,9 @@
 # 🔐 SecretShare 🔃
-- SecretShare is a secure way to delegate time-limited or usage-limited access to sensitive credentials, secrets, or API tokens without revealing them outright. It is like sharing 1-time access to an API key or password vault item without giving away full control.
-   <!-- ![SecretShare Banner](public/banner.png)   -->
+SecretShare is a secure way to delegate time-limited or usage-limited access to sensitive credentials, secrets, or API tokens without revealing them outright. It is like sharing 1-time access to an API key or password vault item without giving away full control.
 
 ## Live : [SecretShare](https://secret-share-lilac.vercel.app/)
 
-![Screenshot (595)](https://github.com/user-attachments/assets/01f40596-a7b5-4349-b92c-67690871075f)
-
----
+![Screenshot 2025-06-07 174457](https://github.com/user-attachments/assets/5482ad7a-490f-47a8-83f7-a9e0dc3a8cf4)
 
 ## 📖 About
 
@@ -21,9 +18,11 @@
 
 ---
 
-## Demo Video
+## Demo 
 
-https://www.loom.com/share/795e1161ca0443c8a2ed488e512889f8?sid=b03c2e6e-34de-4fee-8364-5befcf12bd24
+**Video**: https://www.loom.com/share/795e1161ca0443c8a2ed488e512889f8?sid=b03c2e6e-34de-4fee-8364-5befcf12bd24
+
+**Blog**: [Medium link](https://medium.com/@akashjana663/secretshare-secure-one-time-access-to-secrets-built-with-ucans-storacha-%EF%B8%8F-6f01867cc9f0)
 
 ---
 
@@ -48,33 +47,9 @@ https://www.loom.com/share/795e1161ca0443c8a2ed488e512889f8?sid=b03c2e6e-34de-4f
 - Secret not exposed until all checks pass.
 - Great fit for compliance-heavy environments (finance, infra, health).
 
-
-# File Flow with Storacha Integration
-
-```
-User Input (Secret/Note/API Key)
-        |
-        v
-Encrypt File (Lit Encryption Protocol)
-        |
-        v
-Upload Encrypted File to Storacha (returns CID)
-        |
-        v
-Issue UCAN -> Scoped to:
-   - CID (secret)
-   - Expiry
-   - Usage limit
-   - Recipient's DID
-        |
-        v
-Share ipfs link: 
-        |
-        v
-User accesses → UCAN verified → File fetched from Storacha → Decrypted → Revealed
-```
-
 ---
+# Workflow of SecretShare
+![image](https://github.com/user-attachments/assets/69bfed75-4916-4716-bc75-efc1e493e74f)
 
 <!-- ## 📽️ Live Demo
 
@@ -138,9 +113,13 @@ npm run dev
 ```
 
 ## Resources: ⚡🔥💲
+
 **Storacha UCANS**: https://github.com/storacha/ucanto
+
 **Storacha Upload-Service Capabilities**: https://github.com/storacha/upload-service/tree/main/packages/capabilities
+
 **LIT Encryption Protocol Guide**: https://github.com/storacha/upload-service/tree/main/packages/encrypt-upload-client
+
 **Implementation Guide**: https://github.com/seetadev/Invoice-PPT-Subscribe-Storacha-Storage/tree/lit-encryption
 
 Feel free to ping me in case of any issues or feedback! Happy coding! :rachaheart ♥🔥
