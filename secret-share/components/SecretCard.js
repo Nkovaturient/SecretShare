@@ -66,7 +66,7 @@ export function SecretCard({ secret, onDelete }) {
   const getButtonStyles = () => {
     return revoked
       ? 'p-2 text-gray-400 cursor-not-allowed opacity-50'
-      : 'p-2 text-gray-600 hover:text-gray-900 transition'
+      : 'p-2 text-gray-600 hover:text-lime-700 transition'
   }
 
   return (
@@ -86,7 +86,7 @@ export function SecretCard({ secret, onDelete }) {
       <div className="space-y-4 relative">
         <div className="flex justify-between items-start">
           <div className="space-y-1">
-            <h3 className="font-medium text-gray-900">Shared Secret</h3>
+            <h3 className="font-medium text-lime-700">Shared Secret</h3>
             <p className="text-sm text-sky-500">{decrypted ? revealSecret : (secret.secret).substring(0, 15) + '...'}</p>
             {/* <button
               onClick={handleDecryptionResult}
@@ -149,7 +149,7 @@ export function SecretCard({ secret, onDelete }) {
               onClick={handleRevoke(secret.cid)}
               className={`p-2 transition ${revoked
                 ? 'text-gray-400 cursor-not-allowed'
-                : 'text-gray-600 hover:text-gray-900'
+                : 'text-gray-600 hover:text-lime-700'
                 }`}
               title={revoked ? "Already Revoked" : "Revoke Secret"}
               disabled={revoked}

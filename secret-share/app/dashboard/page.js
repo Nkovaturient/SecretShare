@@ -34,7 +34,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen px-4 py-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-[#1e3551]">
+        <h1 className="text-4xl font-bold text-center mb-8 text-[#dcfe50]">
           🔐 Secret Management Dashboard
         </h1>
 
@@ -80,7 +80,7 @@ export default function DashboardPage() {
             <p className="text-2xl text-gray-400">No secrets found 💫</p>
             <button 
               onClick={() => router.push('/issue')}
-              className="mt-4 px-6 py-2 bg-[#1e3551] text-white rounded-lg hover:bg-[#15283d] transition"
+              className="mt-4 px-6 py-2 bg-[#dcfe50] text-white rounded-lg hover:bg-[#1e3551] transition"
             >
               Share a New Secret
             </button>
@@ -96,7 +96,7 @@ const FilterButton = ({ children, active, onClick }) => (
     onClick={onClick}
     className={`px-4 py-2 rounded-lg transition ${
       active 
-        ? 'bg-[#9ae600] text-black-800'
+        ? 'bg-[#9ae600] text-white'
         : 'bg-white text-[#1e3551] hover:bg-gray-100'
     }`}
   >
