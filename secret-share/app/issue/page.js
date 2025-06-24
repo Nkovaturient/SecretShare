@@ -110,7 +110,7 @@ export default function IssueSecretPage() {
           <ArrowRight size={20} />
         </button>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-5 text-white p-6 rounded-2xl shadow-xl border border-gray-200">
+      <form onSubmit={handleSubmit} className="space-y-5 text-gray-900 dark:text-white p-6 rounded-2xl shadow-xl border border-gray-200">
 
         <InputField
           label="Secret"
