@@ -91,7 +91,7 @@ export default function UploaderBox() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 max-w-2xl mx-auto my-10 border border-gray-200 dark:border-gray-700">
+    <div className=" shadow-lg rounded-lg p-6 max-w-2xl mx-auto my-10 border border-gray-200 dark:border-gray-700">
       <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
         Upload a File
       </h2>

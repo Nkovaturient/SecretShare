@@ -104,13 +104,13 @@ export default function IssueSecretPage() {
       <div className='flex justify-end my-4 '>
         <button
           onClick={handleToCreateAgentDID}
-          className="h-12 py-3 px-4 rounded-md bg-lime-400  font-medium hover:bg-lime-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 flex items-center justify-center space-x-2 transition-colors duration-200"
+          className="h-12 py-3 px-4 rounded-md bg-lime-400  font-medium hover:bg-[#15283d] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 flex items-center justify-center space-x-2 transition-colors duration-200"
         >
           <span>Get your Agent DID</span>
           <ArrowRight size={20} />
         </button>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-5 text-gray-900 p-6 rounded-2xl shadow-xl border border-gray-200">
+      <form onSubmit={handleSubmit} className="space-y-5 text-white p-6 rounded-2xl shadow-xl border border-gray-200">
 
         <InputField
           label="Secret"
