@@ -97,7 +97,7 @@ const FilterButton = ({ children, active, onClick }) => (
     className={`px-4 py-2 rounded-lg transition ${
       active 
         ? 'bg-[#9ae600] text-white'
-        : 'bg-white text-[#1e3551] hover:bg-gray-100'
+        : 'bg-[#9ae600] text-[#1e3551] hover:bg-[#1e3551]'
     }`}
   >
     {children}
