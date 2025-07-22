@@ -61,7 +61,7 @@ SecretShare is a secure way to delegate time-limited or usage-limited access to 
 
 ## ⚙️ How It Works
 
-1. **Issuer uploads secret to Storacha**
+1. **User uploads secret to Storacha**
    - Simple text-based data (e.g., API keys, tokens)
    - Receives a CID after upload
 
